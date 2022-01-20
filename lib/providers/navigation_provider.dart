@@ -36,7 +36,7 @@ class NavigationProvider extends ChangeNotifier {
     HOME_SCREEN: Screen(
       title: 'First',
       child: HomeScreen(),
-      tabIcon: Icons.home,
+      tabIcon: Icons.home_outlined,
       initialRoute: HomeScreen.route,
       navigatorState: GlobalKey<NavigatorState>(),
       onGenerateRoute: (settings) {
@@ -49,7 +49,7 @@ class NavigationProvider extends ChangeNotifier {
     ),
     CARD_SCREEN: Screen(
       title: 'Cart',
-      tabIcon: Icons.shopping_cart,
+      tabIcon: Icons.shopping_cart_outlined,
       child: CartPage(),
       initialRoute: CartPage.route,
       navigatorState: GlobalKey<NavigatorState>(),
@@ -64,9 +64,9 @@ class NavigationProvider extends ChangeNotifier {
       scrollController: ScrollController(),
     ),
     FAVORITE_SCREEN: Screen(
-      title: 'Third',
+      title: 'Favourite',
       child: FavouritePage(),
-      tabIcon: Icons.favorite,
+      tabIcon: Icons.favorite_border_rounded,
       initialRoute: FavouritePage.route,
       navigatorState: GlobalKey<NavigatorState>(),
       onGenerateRoute: (settings) {

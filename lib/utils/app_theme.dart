@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final myTheme = ThemeData(
     scaffoldBackgroundColor: LIGHT,
-    primaryColor: Color(0xFF2390FF),
+    primaryColor: Color(0xFF4F9AE6),
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.blueAccent,
+    ),
     appBarTheme: const AppBarTheme(
       backgroundColor: LIGHT,
       iconTheme: IconThemeData(color: Colors.black),
@@ -20,8 +23,9 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
       headline2: TextStyle(
-        fontSize: 20.0,
+        fontSize: 19.0,
         color: Colors.black,
+        fontWeight: FontWeight.bold,
       ),
       headline3: TextStyle(
         fontSize: 17.0,

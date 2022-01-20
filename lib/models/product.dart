@@ -68,6 +68,7 @@ class Product {
     name = json['name'];
     image = json['image'];
     price = json['price'];
+
     stock = json['stock'];
     createDate = json['createDate'];
     category = List.castFrom<dynamic, String>(json['category']);
