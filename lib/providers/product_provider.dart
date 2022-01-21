@@ -1,21 +1,44 @@
 import 'package:electronic_ecommerce_flutterapp/consts/app_contants.dart';
 import 'package:electronic_ecommerce_flutterapp/models/product.dart';
 import 'package:electronic_ecommerce_flutterapp/services/api_service.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+import 'package:electronic_ecommerce_flutterapp/services/db_provider.dart';
+import 'package:flutter/material.dart';
 
 class ProductProvider with ChangeNotifier {
   bool _isLoading = false;
+  bool _applyFilter = false;
 
   List<Product> _items = [];
+  List<Product> get products => _items;
+
+// for displayiing items in cart
+  List<CartProduct> _cart = [];
+  List<CartProduct> get myCart => _cart;
+
+  // for displaying items in favourite
+  List<Product> _favourite = [];
+  List<Product> get myFavourite => _favourite;
+
+// for filtering products
   List _categories = [];
   List _priceRange = [];
+  List filterCategory = [];
 
   bool get isLoading => _isLoading;
-  List<Product> get products => _items;
+  bool get applyFilter => _applyFilter;
+
   List get categories => _categories;
+  List get priceRange => _priceRange;
+
+  Future<void> initilizeLocalDb() async {
+    DatabaseHandler.initDb().whenComplete(() {
+      DatabaseHandler.createTable();
+      fetchCart();
+    });
+  }
 
   Future<void> fetchData() async {
+    initilizeLocalDb();
     try {
       _isLoading = true;
       notifyListeners();
@@ -26,6 +49,7 @@ class ProductProvider with ChangeNotifier {
         _items = products;
       }
       assignCategories(products);
+      ;
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -51,11 +75,53 @@ class ProductProvider with ChangeNotifier {
 
 // filter category
 
-  Future<void> filterProduct() async {
-    print("hello world");
+  Future<void> filterProduct(RangeValues priceRange) async {
+    _priceRange = [priceRange.start, priceRange.end];
+    _applyFilter = true;
 
-    _items = [];
-    print(_items);
+    notifyListeners();
+  }
+
+  Future<void> addCategory(String? cat, bool value) async {
+    if (value) {
+      filterCategory.add(cat);
+    } else {
+      filterCategory.remove(cat);
+    }
+  }
+
+  Future<void> resetFilter() async {
+    filterCategory = [];
+    _applyFilter = false;
+    notifyListeners();
+  }
+
+  // add to cart,fetch cart from local
+  Future<void> fetchCart() async {
+    var carts = await DatabaseHandler.retrieveProduct();
+    print("==============");
+    _cart = carts;
+    print(_cart.length);
+    notifyListeners();
+
+    print(_cart);
+  }
+
+  Future<void> addToCart(Product product) async {
+    var carts = await DatabaseHandler();
+    carts.insertProduct(CartProduct(
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image));
+    // _cart = carts;
+    fetchCart();
+  }
+
+  Future<void> removeFromCart(int id) async {
+    var carts = await DatabaseHandler.deleteProduct(id);
+    // _cart = carts;
+    fetchCart();
     notifyListeners();
   }
 }

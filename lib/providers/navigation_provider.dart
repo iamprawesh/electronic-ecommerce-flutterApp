@@ -2,6 +2,7 @@ import 'package:electronic_ecommerce_flutterapp/models/screen.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/cart_page.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/checkout_page.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/favorite_page.dart';
+import 'package:electronic_ecommerce_flutterapp/views/pages/filtered_product.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/home_page.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/root.dart';
 import 'package:electronic_ecommerce_flutterapp/views/widgets/exit_dialog.dart';
@@ -27,6 +28,8 @@ class NavigationProvider extends ChangeNotifier {
     switch (settings.name) {
       case CheckoutPage.route:
         return MaterialPageRoute(builder: (_) => CheckoutPage());
+      case FilteredProduct.route:
+        return MaterialPageRoute(builder: (_) => FilteredProduct());
       default:
         return MaterialPageRoute(builder: (_) => Root());
     }
@@ -34,13 +37,15 @@ class NavigationProvider extends ChangeNotifier {
 
   final Map<int, Screen> _screens = {
     HOME_SCREEN: Screen(
-      title: 'First',
+      title: 'Home',
       child: HomeScreen(),
       tabIcon: Icons.home_outlined,
       initialRoute: HomeScreen.route,
       navigatorState: GlobalKey<NavigatorState>(),
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case FilteredProduct.route:
+            return MaterialPageRoute(builder: (_) => FilteredProduct());
           default:
             return MaterialPageRoute(builder: (_) => HomeScreen());
         }

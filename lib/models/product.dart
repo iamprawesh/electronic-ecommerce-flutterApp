@@ -68,7 +68,6 @@ class Product {
     name = json['name'];
     image = json['image'];
     price = json['price'];
-
     stock = json['stock'];
     createDate = json['createDate'];
     category = List.castFrom<dynamic, String>(json['category']);
@@ -84,5 +83,29 @@ class Product {
     _data['createDate'] = createDate;
     _data['category'] = category;
     return _data;
+  }
+}
+
+// CARTPRODUCT
+class CartProduct {
+  final int? id;
+  final String? name;
+  final String? price;
+  final String? image;
+
+  CartProduct(
+      {required this.id,
+      required this.name,
+      required this.price,
+      required this.image});
+
+  CartProduct.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        name = res["name"],
+        price = res["price"],
+        image = res["image"];
+
+  Map<String, Object?> toMap() {
+    return {'id': id, 'name': name, 'price': price, 'image': image};
   }
 }

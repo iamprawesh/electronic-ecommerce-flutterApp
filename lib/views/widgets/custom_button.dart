@@ -4,23 +4,24 @@ class CustomButtom extends StatelessWidget {
   final String? text;
   final VoidCallback? onPressed;
   final double? width;
+  final bool disable;
 
   CustomButtom({
+    this.disable = false,
     @required this.onPressed,
     @required this.text,
     @required this.width,
   });
 
-  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: disable ? () {} : onPressed,
       child: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).primaryColor,
+            color: disable ? Colors.grey : Theme.of(context).primaryColor,
             boxShadow: const [
               BoxShadow(
                 color: Colors.black38,
@@ -34,7 +35,10 @@ class CustomButtom extends StatelessWidget {
             child: Text(
               text ?? "",
               style: const TextStyle(
-                  fontSize: 16, letterSpacing: .7, fontWeight: FontWeight.w600),
+                  color: Colors.white,
+                  fontSize: 16,
+                  letterSpacing: .7,
+                  fontWeight: FontWeight.w600),
             ),
           ),
         ),

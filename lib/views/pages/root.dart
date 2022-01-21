@@ -11,7 +11,10 @@ class Root extends StatelessWidget {
       builder: (context, provider, child) {
         final bottomNavigationBarItems = provider.screens
             .map((screen) => BottomNavigationBarItem(
-                icon: Icon(screen.tabIcon), label: screen.title))
+                icon: Icon(
+                  screen.tabIcon,
+                ),
+                label: screen.title))
             .toList();
 
         final screens = provider.screens
@@ -35,6 +38,7 @@ class Root extends StatelessWidget {
             ),
             bottomNavigationBar: BottomNavigationBar(
               showSelectedLabels: false,
+              iconSize: 30,
               showUnselectedLabels: false,
               items: bottomNavigationBarItems,
               currentIndex: provider.currentTabIndex,
