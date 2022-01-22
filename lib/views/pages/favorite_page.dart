@@ -24,14 +24,16 @@ class _FavouritePageState extends State<FavouritePage> {
   }
 
   Future<int> addProducts() async {
-    var firstUser = CartProduct(
-      id: 1,
-      name: "peter",
-      price: "111",
-      image: "Lebanon",
-    );
-    var add = await DatabaseHandler();
-    add.insertProduct(firstUser);
+    // var firstUser = CartProduct(
+    //   id: 1,
+    //   name: "peter",
+    //   price: "111",
+    //   image: "Lebanon",
+    //   image: "Lebanon",
+
+    // );
+    // var add = await DatabaseHandler();
+    // add.insertProduct(firstUser);
 
     return 1;
   }

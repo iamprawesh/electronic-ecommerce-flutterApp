@@ -125,11 +125,15 @@ class ProductGridItem extends StatelessWidget {
 
                 if (alreadyInCart) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: const Duration(milliseconds: 1000), // default 2s
+
                     content: Text("Already in Cart"),
                   ));
                 } else {
                   provider.addToCart(productItem);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: const Duration(milliseconds: 1000), // default 2s
+
                     content: Text("Added to Cart"),
                   ));
                 }

@@ -4,6 +4,7 @@ import 'package:electronic_ecommerce_flutterapp/views/pages/checkout_page.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/favorite_page.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/filtered_product.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/home_page.dart';
+import 'package:electronic_ecommerce_flutterapp/views/pages/order_confirm.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/root.dart';
 import 'package:electronic_ecommerce_flutterapp/views/widgets/exit_dialog.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class NavigationProvider extends ChangeNotifier {
     switch (settings.name) {
       case CheckoutPage.route:
         return MaterialPageRoute(builder: (_) => CheckoutPage());
+      case OrderConfirm.route:
+        return MaterialPageRoute(builder: (_) => OrderConfirm());
       case FilteredProduct.route:
         return MaterialPageRoute(builder: (_) => FilteredProduct());
       default:
@@ -62,22 +65,10 @@ class NavigationProvider extends ChangeNotifier {
         switch (settings.name) {
           case CheckoutPage.route:
             return MaterialPageRoute(builder: (_) => CheckoutPage());
+          case OrderConfirm.route:
+            return MaterialPageRoute(builder: (_) => OrderConfirm());
           default:
             return MaterialPageRoute(builder: (_) => CartPage());
-        }
-      },
-      scrollController: ScrollController(),
-    ),
-    FAVORITE_SCREEN: Screen(
-      title: 'Favourite',
-      child: FavouritePage(),
-      tabIcon: Icons.favorite_border_rounded,
-      initialRoute: FavouritePage.route,
-      navigatorState: GlobalKey<NavigatorState>(),
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          default:
-            return MaterialPageRoute(builder: (_) => FavouritePage());
         }
       },
       scrollController: ScrollController(),

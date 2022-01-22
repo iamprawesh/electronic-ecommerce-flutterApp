@@ -1,13 +1,13 @@
 import 'package:electronic_ecommerce_flutterapp/consts/app_contants.dart';
 import 'package:electronic_ecommerce_flutterapp/models/product.dart';
 import 'package:electronic_ecommerce_flutterapp/providers/product_provider.dart';
-import 'package:electronic_ecommerce_flutterapp/providers/test_provider.dart';
 import 'package:electronic_ecommerce_flutterapp/utils/colors.dart';
+import 'package:electronic_ecommerce_flutterapp/utils/string_formatter.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/checkout_page.dart';
+
 import 'package:electronic_ecommerce_flutterapp/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:electronic_ecommerce_flutterapp/utils/string_formatter.dart';
 
 class CartPage extends StatefulWidget {
   CartPage({Key? key}) : super(key: key);
@@ -110,13 +110,21 @@ class _CartPageState extends State<CartPage> {
                     ),
                     child: Consumer<ProductProvider>(
                         builder: (context, provider, child) {
+                      var total = 0;
+                      provider.myCart.forEach((e) {
+                        var q = e.quantity ?? 1;
+                        total += e.price!.convertToNumber() * q;
+                      });
+                      print(provider.myCart);
+                      print("provider.myCart");
+
                       return Row(
                         children: [
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   "TOTAL",
                                   style: TextStyle(
                                     fontSize: 15,
@@ -125,8 +133,8 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                 ),
                                 Text(
-                                  "\$ 488",
-                                  style: TextStyle(
+                                  '\$ ${total}',
+                                  style: const TextStyle(
                                     fontSize: 25,
                                     // color: Colors.black38,
                                     fontWeight: FontWeight.bold,
@@ -140,7 +148,9 @@ class _CartPageState extends State<CartPage> {
                                 disable:
                                     provider.myCart.length == 0 ? true : false,
                                 onPressed: () {
-                                  print("Enabled");
+                                  provider.totalAmount(total);
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed(CheckoutPage.route);
                                 },
                                 text: "Checkout",
                                 width: width * .6),
@@ -173,6 +183,14 @@ class CartItem extends StatefulWidget {
 
 class _CartItemState extends State<CartItem> {
   int quantity = 1;
+  @override
+  void initState() {
+    // TODO: implement initState
+    quantity = widget.productItem.quantity ?? 1;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -230,7 +248,11 @@ class _CartItemState extends State<CartItem> {
                           ),
                         ),
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            duration:
+                                Duration(milliseconds: 1000), // default 2s
+
                             content: Text("Removed From Cart"),
                           ));
                           widget.provider
@@ -267,6 +289,8 @@ class _CartItemState extends State<CartItem> {
                             onTap: () {
                               setState(() {
                                 quantity += 1;
+                                widget.provider.updateCartQuantity(
+                                    widget.productItem.id ?? 0, quantity);
                               });
                               print("Add");
                             },
@@ -281,13 +305,13 @@ class _CartItemState extends State<CartItem> {
                             )),
                             child: Text(
                               quantity.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18.0, color: Colors.black),
                             ).centerWidget(),
                           ),
                           InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(3.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(3.0),
                               child: Icon(
                                 Icons.remove,
                                 size: 22,
@@ -298,10 +322,10 @@ class _CartItemState extends State<CartItem> {
                                 if (quantity == 1) {
                                 } else {
                                   quantity -= 1;
+                                  widget.provider.updateCartQuantity(
+                                      widget.productItem.id ?? 0, quantity);
                                 }
                               });
-
-                              print("Remove ");
                             },
                           ),
                         ],
@@ -327,54 +351,6 @@ class _CartItemState extends State<CartItem> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class TextDisplay extends StatefulWidget {
-  @override
-  _TextDisplayState createState() => _TextDisplayState();
-}
-
-class _TextDisplayState extends State<TextDisplay> {
-  @override
-  Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
-
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Text(
-        appState.getDisplayText,
-        style: const TextStyle(
-          fontSize: 24.0,
-        ),
-      ),
-    );
-  }
-}
-
-class TextEditWidget extends StatefulWidget {
-  @override
-  _TextEditWidgetState createState() => _TextEditWidgetState();
-}
-
-class _TextEditWidgetState extends State<TextEditWidget> {
-  TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
-
-    return Container(
-      child: TextField(
-        controller: _textEditingController,
-        decoration: InputDecoration(
-          labelText: "Some Text",
-          border: OutlineInputBorder(),
-        ),
-        onChanged: (changed) => appState.setDisplayText(changed),
-        onSubmitted: (submitted) => appState.setDisplayText(submitted),
       ),
     );
   }

@@ -30,6 +30,10 @@ class ProductProvider with ChangeNotifier {
   List get categories => _categories;
   List get priceRange => _priceRange;
 
+  // payable amoont
+  int _payableAmount = 0;
+  int get payableAmount => _payableAmount;
+
   Future<void> initilizeLocalDb() async {
     DatabaseHandler.initDb().whenComplete(() {
       DatabaseHandler.createTable();
@@ -101,10 +105,15 @@ class ProductProvider with ChangeNotifier {
     var carts = await DatabaseHandler.retrieveProduct();
     print("==============");
     _cart = carts;
-    print(_cart.length);
+    print("_cart[0].quantity");
     notifyListeners();
 
     print(_cart);
+  }
+
+  Future<void> totalAmount(int amount) async {
+    _payableAmount = amount;
+    notifyListeners();
   }
 
   Future<void> addToCart(Product product) async {
@@ -113,14 +122,19 @@ class ProductProvider with ChangeNotifier {
         id: product.id,
         name: product.name,
         price: product.price,
+        quantity: 1,
         image: product.image));
     // _cart = carts;
     fetchCart();
   }
 
+  Future<void> updateCartQuantity(int productId, int quantity) async {
+    await DatabaseHandler.updateQuantity(productId, quantity);
+    fetchCart();
+  }
+
   Future<void> removeFromCart(int id) async {
     var carts = await DatabaseHandler.deleteProduct(id);
-    // _cart = carts;
     fetchCart();
     notifyListeners();
   }

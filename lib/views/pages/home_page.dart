@@ -2,6 +2,7 @@ import 'package:electronic_ecommerce_flutterapp/consts/app_contants.dart';
 import 'package:electronic_ecommerce_flutterapp/models/product.dart';
 import 'package:electronic_ecommerce_flutterapp/providers/navigation_provider.dart';
 import 'package:electronic_ecommerce_flutterapp/providers/product_provider.dart';
+import 'package:electronic_ecommerce_flutterapp/services/db_provider.dart';
 import 'package:electronic_ecommerce_flutterapp/views/pages/filtered_product.dart';
 import 'package:electronic_ecommerce_flutterapp/views/widgets/custom_button.dart';
 import 'package:electronic_ecommerce_flutterapp/views/widgets/product_item.dart';
@@ -60,17 +61,30 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    print(productProvider.categories);
-                    // productProvider.fetchCart();
-                  },
-                  child: Text("Fetch")),
-              ElevatedButton(
-                  onPressed: () {
-                    productProvider.removeFromCart(5);
-                  },
-                  child: Text("Delete")),
+              // ElevatedButton(
+              //     onPressed: () {
+              //       print(productProvider.categories);
+              //       productProvider.fetchCart();
+              //     },
+              //     child: Text("Fetch")),
+              // ElevatedButton(
+              //     onPressed: () async {
+              //       var val = await DatabaseHandler.dropTable("product");
+              //       print(val);
+              //       print("============================");
+
+              //       // productProvider.removeFromCart(5);
+              //     },
+              //     child: Text("Drop Table")),
+              // ElevatedButton(
+              //     onPressed: () async {
+              //       var val = await DatabaseHandler.updateQuantity(1, 1);
+              //       print(val);
+              //       print("============================");
+
+              //       // productProvider.removeFromCart(5);
+              //     },
+              //     child: Text("Update")),
               Consumer<ProductProvider>(builder: (context, provider, child) {
                 return Container(
                   padding: const EdgeInsets.all(AppConstants.SECTION_GAP),
@@ -83,11 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            // childAspectRatio: (itemWidth / itemHeight),
                             crossAxisSpacing: 10.0,
                             mainAxisExtent: 250,
                             mainAxisSpacing: 25,
-                            // maxCrossAxisExtent: 500,
                           ),
                           itemBuilder: (context, index) {
                             return ProductGridItem(

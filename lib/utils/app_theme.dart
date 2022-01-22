@@ -34,16 +34,6 @@ class AppTheme {
         color: Colors.black,
         fontWeight: FontWeight.w500,
       ),
-      // headline6: TextStyle(
-      //   color: Colors.white,
-      //   fontSize: 16.0,
-      // ),
-      // bodyText1: TextStyle(
-      //   color: Colors.white,
-      // ),
-      // bodyText2: TextStyle(
-      //   color: Colors.white,
-      // ),
     ),
   );
 }

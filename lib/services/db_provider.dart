@@ -32,7 +32,7 @@ class DatabaseHandler {
       print("Hello from createTable");
       // todo  - flock id must be there
       await _db!.execute(
-        "CREATE TABLE product(id INTEGER PRIMARY KEY, name TEXT NOT NULL, image TEXT NOT NULL, price TEXT NOT NULL)",
+        "CREATE TABLE product(id INTEGER PRIMARY KEY, name TEXT NOT NULL, image TEXT NOT NULL, price TEXT NOT NULL, quantity INTEGER)",
       );
     } catch (e) {}
   }
@@ -47,31 +47,51 @@ class DatabaseHandler {
   }
 
   static Future<List<CartProduct>> retrieveProduct() async {
-    // _db!.query('product').then((value) => {
-    //   value.map((e) => CartProduct.fromMap(e)).toList()
-    // });
-
-    final List<Map<String, Object?>> queryResult = await _db!.query('product');
-    return queryResult.map((e) => CartProduct.fromMap(e)).toList();
+    try {
+      final List<Map<String, Object?>> queryResult =
+          await _db!.query('product');
+      return queryResult.map((e) => CartProduct.fromMap(e)).toList();
+    } catch (e) {
+      throw Exception("Some error");
+    }
   }
 
   static Future<void> deleteProduct(int id) async {
-    await _db!.delete(
-      'product',
-      where: "id = ?",
-      whereArgs: [id],
-    );
+    try {
+      await _db!.delete(
+        'product',
+        where: "id = ?",
+        whereArgs: [id],
+      );
+    } catch (e) {}
+  }
 
-    Future<int> dropTable(String tableName) async {
-      try {
-        await _db!.execute("DROP TABLE IF EXISTS $tableName");
-        print("droping table");
+  static Future<int> updateQuantity(int id, int quantity) async {
+    try {
+      Map<String, dynamic> row = {
+        'quantity': quantity,
+      };
+      await _db!.update(
+        'product',
+        row,
+        where: "id = ?",
+        whereArgs: [id],
+      );
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
 
-        return 1;
-      } catch (e) {
-        print(e);
-        return 0;
-      }
+  static Future<int> dropTable(String tableName) async {
+    try {
+      await _db!.execute("DROP TABLE IF EXISTS $tableName");
+      print("droping table");
+
+      return 1;
+    } catch (e) {
+      print(e);
+      return 0;
     }
   }
 
